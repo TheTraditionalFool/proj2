@@ -61,6 +61,17 @@ abstract class MCAnswer extends Answer {
 	public void setSelected(boolean selected) {
 		this.isSelected = selected;
 	}
+	
+	public double getCredit(Answer rightAnswer) {
+		if(rightAnswer instanceof MCAnswer) {
+			MCAnswer tmp = (MCAnswer) rightAnswer;
+			if(this.ans.equals(tmp.ans)) {
+				return this.creditIfSelected;
+			}
+			else return 0.0;
+		}
+		else return 0.0;
+	}
 }
 
 /* Multiple choice single answer class, which  is a child of the MCAnswer
@@ -75,11 +86,6 @@ class MCSAAnswer extends MCAnswer{
 		super(text, credit);
 	}
 	
-	//checks if the answer was right or wrong
-	//compares this answer to the rightAnswer that is passed in
-	public double getCredit(Answer rightAnswer) {
-		return this.creditIfSelected;
-	}
 }
 
 
@@ -92,21 +98,6 @@ class MCMAAnswer extends MCAnswer{
 	//constructor for MCMAAnswer
 	MCMAAnswer(String text, double credit){
 		super(text, credit);
-	}
-	
-	
-	//if it's a multiple choice but only one rightAnswer
-	public double getCredit(Answer rightAnswer) {
-		return this.creditIfSelected;
-	}
-	
-	//static method to gather the total credit the user received for this answer
-	static public double getCredit(ArrayList<Answer> rightAnswer, ArrayList<Answer> studentAnswer) {
-		double credit = 0;
-		for(int i = 0; i < studentAnswer.size(); i++) {
-			credit += studentAnswer.get(i).getCredit(null);
-		}
-		return credit;
 	}	
 }
 
@@ -162,13 +153,22 @@ class NumAnswer extends Answer{
 		System.out.println(this.ans);
 	}
 	
-	//Basic credit function gives no partial credit
+	//Basic credit function gives credit, and your answer may be right if youre just 0.5 within range
 	//just checks if the answer is right or wrong
 	double getCredit(Answer rightAnswer) {
 		if(rightAnswer instanceof NumAnswer) {
 			NumAnswer rightNum = (NumAnswer)rightAnswer;
-			if(this.ans == rightNum.ans) {
+			if(Math.abs(this.ans - rightNum.ans) <= 0.5) {
 				return 1.0;
+			}
+			else if(Math.abs(this.ans - rightNum.ans) <= 1.0) {
+				return 0.8;
+			}
+			else if(Math.abs(this.ans - rightNum.ans) <= 1.5) {
+				return 0.7;
+			}
+			else if(Math.abs(this.ans - rightNum.ans) <= 2.0) {
+				return 0.5;
 			}
 			else {
 				return 0.0;

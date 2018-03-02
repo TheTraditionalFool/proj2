@@ -31,7 +31,9 @@ public abstract class Question{
 	
 	abstract void print(); //print the question
 	//set the right question
-	abstract void setRightAnswer(Answer ans);
+	public void setRightAnswer(Answer ans) {
+		this.rightAnswer = ans;
+	}
 	abstract Answer getNewAnswer();
 	//Scan students answer
 	abstract void getAnswerFromStudent();
@@ -71,6 +73,14 @@ abstract class MCQuestion extends Question{
 	//simple method to randomize the answers
 	public void reorderAnswers() {
 		Collections.shuffle(this.answers);
+	}
+	
+	public double getValue(MCAnswer studAns) {
+		double credit = 0;
+		for(int i = 0; i < this.answers.size(); i++) {
+			credit += answers.get(i).getCredit(studAns);
+		}
+		return this.maxValue * credit;
 	}
 }
 
@@ -135,12 +145,10 @@ class MCSAQuestion extends MCQuestion{
 	//Calculate the students score for this answer
 	public double getValue() {
 		if(this.isAnswered == false) return 0.0;
-		if(studentAnswer instanceof MCSAAnswer) {
-			return studentAnswer.getCredit(rightAnswer)*this.maxValue; //call the credit class and multiply it with the maxvalue
+		if(this.studentAnswer instanceof MCSAAnswer) {
+			return super.getValue((MCSAAnswer)this.studentAnswer); //call the super function
 		}
-		else { //error, should be MCSAAnswer
-			return 0.0;
-		}
+		else return 0.0; // error
 	}
 	
 	//simple setter method for setting the right answer
@@ -151,14 +159,14 @@ class MCSAQuestion extends MCQuestion{
 
 class MCMAQuestion extends MCQuestion{
 	protected ArrayList<Answer> studentAnswer;
-	protected ArrayList<Answer> rightAnswer;
+	public double baseCredit;
 	
 	//basic constructor for the class, calls the parent constructor
 	//also replaces studentAnswer and rightAnswer for arrayLists
-	public MCMAQuestion(String text, double maxValue) {
+	public MCMAQuestion(String text, double maxValue, double bCredit) {
 		super(text, maxValue);
+		baseCredit = bCredit;
 		studentAnswer = new ArrayList<Answer>();
-		rightAnswer = new ArrayList<Answer>();
 	}
 	
 	//get a new MCSAAnswer and return it
@@ -218,19 +226,16 @@ class MCMAQuestion extends MCQuestion{
 		}
 	}
 	
-	//setter for rightAnswer currently unused
-	public void setRightAnswer(Answer ans) {
-		this.rightAnswer.add(ans);
-	}
-	
 	//calculate the value for the question
 	public double getValue() {
-		if(this.isAnswered == false) return 0.0;
-		double totalCredit = 0;
+		double valueSoFar = this.baseCredit*this.maxValue;
+		if(this.isAnswered == false) return valueSoFar;
 		for(int i = 0; i < this.studentAnswer.size(); i++ ) { //loop through each answer in the ArrayList of student answers
-			totalCredit += this.studentAnswer.get(i).getCredit(null); //call getCredit for each answer
+			if(this.studentAnswer.get(i) instanceof MCMAAnswer) {
+				valueSoFar += super.getValue((MCMAAnswer)this.studentAnswer.get(i)); //call getCredit for each answer
+			}
 		}
-		return totalCredit*this.maxValue; //total credit* maxvalue
+		return valueSoFar; //total credit* maxvalue
 	}
 }
 	

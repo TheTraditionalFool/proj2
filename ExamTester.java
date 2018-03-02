@@ -1,8 +1,17 @@
+/* Exam Tester Class
+ * Author: Stephen Swick
+ * Netid: sswick2
+ * Holds main that tests the classes
+ */
 import java.util.*;
 
 public class ExamTester {
 	
 	public static void main(String [] args) {
+		System.out.println("Exam Tester main");
+		System.out.println("Author: Stephen Swick");
+		System.out.println("Netid: sswick2");
+		
 		Exam exam1 = new Exam("Yolo Exam");
 		
 		MCSAQuestion question1 = new MCSAQuestion("Hello what is my name?", 5.0);
@@ -19,14 +28,14 @@ public class ExamTester {
 		question5.addAnswer(question5.getNewAnswer("77777777", 0.0));
 		question5.addAnswer(question5.getNewAnswer("90210", 0.0));
 		
-		MCMAQuestion question2 = new MCMAQuestion("What am I listening to?", 5.0);
+		MCMAQuestion question2 = new MCMAQuestion("What am I listening to? Circle all that apply:", 5.0);
 		question2.addAnswer(new MCMAAnswer("Puzzle", 0.5));
 		question2.addAnswer(new MCMAAnswer("Kanye", 0));
 		question2.addAnswer(new MCMAAnswer("King Gizzard", 0.5));
 		question2.addAnswer(new MCMAAnswer("Beach House", 0));
 		question2.addAnswer(new MCMAAnswer("Milk Music", 0));
 		
-		MCMAQuestion question6 = new MCMAQuestion("How am I feeling right now?", 5.0);
+		MCMAQuestion question6 = new MCMAQuestion("How am I feeling right now? Circle all that apply:", 5.0);
 		question6.addAnswer(question6.getNewAnswer("Glitter", 0.33));
 		question6.addAnswer(question6.getNewAnswer("like laffin", 0.0));
 		question6.addAnswer(question6.getNewAnswer("Good?", 0.33));
