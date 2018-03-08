@@ -21,6 +21,9 @@ public abstract class Answer {
 
 	}
 	
+	protected Answer(Scanner file) {
+		
+	}
 	//Method to print out an answer onto the screen
 	//Question class will now handle printing the letters infront of each answer choice
 	//so just print out the string
@@ -45,6 +48,10 @@ abstract class MCAnswer extends Answer {
 		this.ans = answer;
 		this.isSelected = false;
 		this.creditIfSelected = credit;
+	}
+	
+	protected MCAnswer(Scanner file) {
+		this.ans = file.nextLine();
 	}
 	
 	//overrides Answers print, but it is just the same thing
@@ -86,6 +93,9 @@ class MCSAAnswer extends MCAnswer{
 		super(text, credit);
 	}
 	
+	MCSAAnswer(Scanner file){
+		super(file);
+	}
 }
 
 
@@ -98,7 +108,12 @@ class MCMAAnswer extends MCAnswer{
 	//constructor for MCMAAnswer
 	MCMAAnswer(String text, double credit){
 		super(text, credit);
-	}	
+	}
+	
+	
+	MCMAAnswer(Scanner file){
+		super(file);
+	}
 }
 
 /* SAAnswer class, which contains the short answer object
@@ -114,6 +129,9 @@ class SAAnswer extends Answer{
 		this.ans = answer;
 	}
 	
+	SAAnswer(Scanner file){
+		this.ans = file.nextLine();
+	}
 	//print out the string for the answer
 	public void print() {
 		System.out.println(this.ans);
@@ -148,6 +166,9 @@ class NumAnswer extends Answer{
 		this.ans = a;
 	}
 	
+	NumAnswer(Scanner file){
+		this.ans = file.nextDouble();
+	}
 	//print their answer
 	void print() {
 		System.out.println(this.ans);

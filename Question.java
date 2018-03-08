@@ -125,7 +125,8 @@ class MCSAQuestion extends MCQuestion{
 					this.studentAnswer = tmp;
 			}
 		}
-		Scanner scan = new Scanner(System.in);
+		//Scanner scan = new Scanner(System.in);
+		Scanner scan = ScannerFactory.getKeyboardScanner();
 		char choice = scan.nextLine().trim().toLowerCase().charAt(0); //scan their input, get the first char 
 		int index = (int)choice - 97; //normalize the choice to index form
 		while(index < 0 || index >= this.answers.size() ) {
