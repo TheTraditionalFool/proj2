@@ -19,6 +19,25 @@ public class Exam {
 		this.questions = new ArrayList<Question>(5); //create ArrayList for questions default set to 5
 	}
 	
+	public Exam(Scanner file) {
+		this.text = file.nextLine();
+		this.questions = new ArrayList<Question>();
+		while(file.hasNext()) {
+			String qType = file.nextLine();
+			if(qType.equals("SAQuestion")) {
+				this.questions.add(new SAQuestion(file));
+			}
+			else if(qType.equals("MCSAQuestion")) {
+				this.questions.add(new MCSAQuestion(file));
+			}
+			else if(qType.equals("MCMAQuestion")) {
+				this.questions.add(new MCMAQuestion(file));
+			}
+			else if(qType.equals("NumQuestion")) {
+				this.questions.add(new NumQuestion(file));
+			}
+		}
+	}
 	//Method to add a question to the exam
 	public void AddQuestion(Question q) {
 		this.questions.add(q); //add the question to the ArrayList

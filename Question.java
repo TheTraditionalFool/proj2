@@ -191,6 +191,7 @@ class MCMAQuestion extends MCQuestion{
 	
 	public MCMAQuestion(Scanner file) {
 		super(file);
+		this.baseCredit = Double.parseDouble(file.nextLine());
 		int numAs = Integer.parseInt(file.nextLine());
 		for(int i = 0; i < numAs; i++) {
 			double val = file.nextDouble();

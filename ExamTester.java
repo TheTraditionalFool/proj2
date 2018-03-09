@@ -13,24 +13,7 @@ public class ExamTester {
 		String fileName = ScannerFactory.getKeyboardScanner().nextLine();
 		File file = new File(fileName);
 		Scanner fileScanner = new Scanner(file);
-		String tok = fileScanner.nextLine();
-		if(tok.equals("MCSAAnswer")) {
-			MCSAAnswer ans1 = new MCSAAnswer(fileScanner);
-			ans1.print();
-		}
-		if(tok.equals("SAQuestion")) {
-			SAQuestion question1 = new SAQuestion(fileScanner);
-			question1.print();
-			question1.getAnswerFromStudent();
-			System.out.println("Score: " + question1.getValue());
-		}
-		fileScanner.nextLine();
-		tok = fileScanner.nextLine();
-		if(tok.equals("MCSAQuestion")) {
-			MCSAQuestion question2 = new MCSAQuestion(fileScanner);
-			question2.print();
-			question2.getAnswerFromStudent();
-			System.out.println("Score: " + question2.getValue());
-		}
+		Exam testExam = new Exam(fileScanner);
+		testExam.print();
 	}
 }
