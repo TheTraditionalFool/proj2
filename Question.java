@@ -46,6 +46,14 @@ public abstract class Question{
 	abstract double getValue();
 	
 	abstract void save(PrintWriter file);
+	
+	public void saveStudentAnswers(PrintWriter file) {
+		if(this.isAnswered == false) return;
+		if(this.studentAnswer instanceof MCSAAnswer) {
+			file.println("MCSAAnswer");
+		}
+		this.studentAnswer.save(file);
+	}
 }
 
 /* Abstract multiple choice question class, an extension of Question
@@ -301,6 +309,15 @@ class MCMAQuestion extends MCQuestion{
 		}
 		file.println();
 	}
+	
+	public void saveStudentAnswers(PrintWriter file) {
+		file.println("MCMAAnswer");
+		int length = this.studentAnswer.size();
+		file.println(length);
+		for(int i = 0; i < length; i++) {
+			this.studentAnswer.get(i).save(file);
+		}
+	}
 }
 	
 //Single Answer question class, extends Question
@@ -438,4 +455,5 @@ class NumQuestion extends Question{
 			file.println( tmp.getString()+ "\n");
 		}
 	}
+	
 }
