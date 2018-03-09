@@ -7,6 +7,7 @@
  * for the exam as he desires. 
  */
 import java.util.*;
+import java.io.*;
 
 public class Exam {
 	//private data types
@@ -112,7 +113,7 @@ public class Exam {
 	//Function I wrote to enter exam taking mode
 	//The test taker is able to answer each question individually and scroll through each question
 	public void takeExam() {
-		Scanner scan = new Scanner(System.in); //create scanner for input
+		Scanner scan = ScannerFactory.getKeyboardScanner(); //create scanner for input
 		
 		int i = 0;
 		int size = this.questions.size();
@@ -159,6 +160,13 @@ public class Exam {
 				continue;
 			}
 
+		}
+	}
+	
+	public void save(PrintWriter file) {
+		file.println(this.text + "\n");
+		for(int i = 0; i < this.questions.size(); i++) {
+			this.questions.get(i).save(file);
 		}
 	}
 }

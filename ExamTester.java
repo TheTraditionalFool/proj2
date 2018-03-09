@@ -15,8 +15,11 @@ public class ExamTester {
 		Scanner fileScanner = new Scanner(file);
 		FileOutputStream ans = new FileOutputStream("StudentAnswer.txt", false);
 		FileOutputStream ques = new FileOutputStream("Questions.txt", false);
+		FileOutputStream exam = new FileOutputStream("Exam.txt", false);
+		
 		PrintWriter studentAns = new PrintWriter(ans);
 		PrintWriter questions = new PrintWriter(ques);
+		PrintWriter examW = new PrintWriter(exam);
 		
 		MCSAAnswer ans1 = new MCSAAnswer("YOLO BOY", 1.0);
 		MCMAAnswer ans2 = new MCMAAnswer("SHE SUCC ME", 1.0);
@@ -52,9 +55,12 @@ public class ExamTester {
 		q3.save(questions);
 		q4.save(questions);
 		
+		Exam testExam = new Exam(fileScanner);
+		testExam.print();
+		testExam.save(examW);
+		
 		studentAns.close();
 		questions.close();
-		//exam testExam = new Exam(fileScanner);
-		//testExam.print();
+		examW.close();
 	}
 }
