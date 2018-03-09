@@ -13,7 +13,23 @@ public class ExamTester {
 		String fileName = ScannerFactory.getKeyboardScanner().nextLine();
 		File file = new File(fileName);
 		Scanner fileScanner = new Scanner(file);
-		Exam testExam = new Exam(fileScanner);
-		testExam.print();
+		FileOutputStream ans = new FileOutputStream("StudentAnswer.txt", false);
+		PrintWriter studentAns = new PrintWriter(ans);
+		
+		MCSAAnswer ans1 = new MCSAAnswer("YOLO BOY", 1.0);
+		MCMAAnswer ans2 = new MCMAAnswer("SHE SUCC ME", 1.0);
+		SAAnswer ans3 = new SAAnswer("Dodgers are blowing it");
+		NumAnswer ans4 = new NumAnswer(55.0);
+		
+		studentAns.println("MCSAAnswer");
+		ans1.save(studentAns);
+		studentAns.println("MCMAAnswer");
+		ans2.save(studentAns);
+		ans3.save(studentAns);
+		ans4.save(studentAns);
+		
+		studentAns.close();
+		//exam testExam = new Exam(fileScanner);
+		//testExam.print();
 	}
 }

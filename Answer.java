@@ -9,6 +9,7 @@
  */
 
 import java.util.*;
+import java.io.*;
 /* Answer is now an abstract class, so a basic answer
  * will just consist of its string and each child
  * class must be able to calculate its own credit
@@ -32,6 +33,8 @@ public abstract class Answer {
 	//default getCredit method just compares the current answer to the right answer
 	//if theyre equal return full credit, otherwise it is wrong
 	abstract double getCredit(Answer rightAnswer);
+	
+	abstract void save(PrintWriter file);
 }
 
 /* Abstract class for the Multiple choice answer
@@ -78,6 +81,11 @@ abstract class MCAnswer extends Answer {
 			else return 0.0;
 		}
 		else return 0.0;
+	}
+	
+	public void save(PrintWriter file) {
+		file.println(this.ans);
+		file.println();
 	}
 }
 
@@ -153,6 +161,12 @@ class SAAnswer extends Answer{
 			return 0.0;
 		}
 	}
+	
+	public void save(PrintWriter file) {
+		file.println("SAAnswer");
+		file.println(this.ans);
+		file.println();
+	}
 }
 
 class NumAnswer extends Answer{
@@ -170,13 +184,13 @@ class NumAnswer extends Answer{
 		this.ans = file.nextDouble();
 	}
 	//print their answer
-	void print() {
+	public void print() {
 		System.out.println(this.ans);
 	}
 	
 	//Basic credit function gives credit, and your answer may be right if youre just 0.5 within range
 	//just checks if the answer is right or wrong
-	double getCredit(Answer rightAnswer) {
+	public double getCredit(Answer rightAnswer) {
 		if(rightAnswer instanceof NumAnswer) {
 			NumAnswer rightNum = (NumAnswer)rightAnswer;
 			if(Math.abs(this.ans - rightNum.ans) <= 0.5) {
@@ -201,7 +215,13 @@ class NumAnswer extends Answer{
 	}
 	
 	//setter for if they called the constructor that doesnt do anything
-	void setAnswer(double a) {
+	public void setAnswer(double a) {
 		this.ans = a;
+	}
+	
+	public void save(PrintWriter file) {
+		file.println("NumQuestion");
+		file.println(this.ans);
+		file.println();
 	}
 }
