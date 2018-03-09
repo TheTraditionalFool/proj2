@@ -87,6 +87,10 @@ abstract class MCAnswer extends Answer {
 		file.println(this.ans);
 		file.println();
 	}
+	
+	public String getString() {
+		return this.ans;
+	}
 }
 
 /* Multiple choice single answer class, which  is a child of the MCAnswer
@@ -167,6 +171,10 @@ class SAAnswer extends Answer{
 		file.println(this.ans);
 		file.println();
 	}
+	
+	public String getString() {
+		return this.ans;
+	}
 }
 
 class NumAnswer extends Answer{
@@ -223,5 +231,9 @@ class NumAnswer extends Answer{
 		file.println("NumQuestion");
 		file.println(this.ans);
 		file.println();
+	}
+	
+	public double getString() {
+		return this.ans;
 	}
 }

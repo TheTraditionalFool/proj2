@@ -6,7 +6,7 @@
  * the user creates an exam, the user can add more than 5 answers per question.
  */
 import java.util.*;
-
+import java.io.*;
 /* Abstract question class, will consist of a String for
  * the question text and 2 Answers, one for student selection
  * and one for the correct Answer, and finally a double to score
@@ -44,6 +44,8 @@ public abstract class Question{
 	abstract void getAnswerFromStudent();
 	//score the question
 	abstract double getValue();
+	
+	abstract void save(PrintWriter file);
 }
 
 /* Abstract multiple choice question class, an extension of Question
@@ -90,6 +92,18 @@ abstract class MCQuestion extends Question{
 			credit += answers.get(i).getCredit(studAns);
 		}
 		return this.maxValue * credit;
+	}
+	
+	public void save(PrintWriter file) {
+		file.println(this.maxValue);
+		file.println(this.text);
+		int length = this.answers.size();
+		file.println(length);
+		for(int i = 0; i < length; i++) {
+			file.print(this.answers.get(i).getCredit(this.answers.get(i))+ " ");
+			file.println(this.answers.get(i).getString());
+		}
+		file.println();
 	}
 }
 
@@ -174,6 +188,11 @@ class MCSAQuestion extends MCQuestion{
 	//simple setter method for setting the right answer
 	public void setRightAnswer(Answer ans) {
 		this.rightAnswer = ans;
+	}
+	
+	public void save(PrintWriter file) {
+		file.println("MCSAQuestion");
+		super.save(file);
 	}
 }
 
@@ -268,6 +287,20 @@ class MCMAQuestion extends MCQuestion{
 		}
 		return valueSoFar; //total credit* maxvalue
 	}
+	
+	public void save(PrintWriter file) {
+		file.println("MCMAQuestion");
+		file.println(this.maxValue);
+		file.println(this.text);
+		file.println(this.baseCredit);
+		int length = this.answers.size();
+		file.println(length);
+		for(int i = 0; i < length; i++) {
+			file.print(this.answers.get(i).getCredit(this.answers.get(i))+ " ");
+			file.println(this.answers.get(i).getString());
+		}
+		file.println();
+	}
 }
 	
 //Single Answer question class, extends Question
@@ -325,12 +358,22 @@ class SAQuestion extends Question{
 			this.studentAnswer.print();
 		}
 	}
+	
+	public void save(PrintWriter file) {
+		file.println("SAQuestion");
+		file.println(this.maxValue);
+		file.println(this.text);
+		if(this.rightAnswer instanceof SAAnswer) {
+			SAAnswer tmp = (SAAnswer)this.rightAnswer;
+			file.println( tmp.getString()+ "\n");
+		}
+	}
 }
 
 //Number question class, extends question
 //This is for questions that involve math and the like
 class NumQuestion extends Question{
-	
+
 	//constructor, just call parent constructor
 	NumQuestion(String text, double maxValue){
 		super(text, maxValue);
@@ -384,5 +427,15 @@ class NumQuestion extends Question{
 	//overloaded method that will return a NumAnswer for this question with the answer already specified
 	public NumAnswer getNewAnswer(double x) {
 		return new NumAnswer(x);
+	}
+	
+	public void save(PrintWriter file) {
+		file.println("NumQuestion");
+		file.println(this.maxValue);
+		file.println(this.text);
+		if(this.rightAnswer instanceof NumAnswer) {
+			NumAnswer tmp = (NumAnswer)this.rightAnswer;
+			file.println( tmp.getString()+ "\n");
+		}
 	}
 }

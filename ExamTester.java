@@ -14,7 +14,9 @@ public class ExamTester {
 		File file = new File(fileName);
 		Scanner fileScanner = new Scanner(file);
 		FileOutputStream ans = new FileOutputStream("StudentAnswer.txt", false);
+		FileOutputStream ques = new FileOutputStream("Questions.txt", false);
 		PrintWriter studentAns = new PrintWriter(ans);
+		PrintWriter questions = new PrintWriter(ques);
 		
 		MCSAAnswer ans1 = new MCSAAnswer("YOLO BOY", 1.0);
 		MCMAAnswer ans2 = new MCMAAnswer("SHE SUCC ME", 1.0);
@@ -28,7 +30,30 @@ public class ExamTester {
 		ans3.save(studentAns);
 		ans4.save(studentAns);
 		
+		MCMAQuestion q1 = new MCMAQuestion("What's my number?", 5.0, 0.4);
+		q1.addAnswer(new MCMAAnswer("2", -0.2));
+		q1.addAnswer(new MCMAAnswer("911", .2));
+		q1.addAnswer(new MCMAAnswer("8479026702", 0.2));
+		q1.addAnswer(new MCMAAnswer("11111", -0.2));
+		q1.addAnswer(new MCMAAnswer("42", 0.2));
+		MCSAQuestion q2 = new MCSAQuestion("This is an abstract exam", 5.0);
+		q2.addAnswer(new MCSAAnswer("NIIIIIIICE", 0.0));
+		q2.addAnswer(new MCSAAnswer("NIIIIIIICE", 0.0));
+		q2.addAnswer(new MCSAAnswer("NIIIIIIICE", 1.0));
+		q2.addAnswer(new MCSAAnswer("NIIIIIIICE", 0.0));
+		q2.addAnswer(new MCSAAnswer("NIIIIIIICE", 0.0));
+		NumQuestion q3 = new NumQuestion("What is 2 gworps * 5 yapples?", 5.0);
+		q3.setRightAnswer(new NumAnswer(32.76));
+		SAQuestion q4 = new SAQuestion("Why do I buy all these things?", 5.0);
+		q4.setRightAnswer(new SAAnswer("To fill the void"));
+		
+		q1.save(questions);
+		q2.save(questions);
+		q3.save(questions);
+		q4.save(questions);
+		
 		studentAns.close();
+		questions.close();
 		//exam testExam = new Exam(fileScanner);
 		//testExam.print();
 	}
