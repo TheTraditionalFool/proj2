@@ -27,6 +27,11 @@ public abstract class Question{
 		this.isAnswered = false;
 	}
 	
+	protected Question(Scanner file) {
+		this.maxValue = Double.parseDouble(file.nextLine());
+		this.text = file.nextLine();
+		this.isAnswered = false;
+	}
 	//list of basic methods that each child class should have
 	
 	abstract void print(); //print the question
@@ -56,6 +61,10 @@ abstract class MCQuestion extends Question{
 		this.answers = new ArrayList<MCAnswer>();
 	}
 	
+	protected MCQuestion(Scanner file) {
+		super(file);
+		this.answers = new ArrayList<MCAnswer>();
+	}
 	//print method, Question will now handle printing the "a. , b., c., ... etc"
 	public void print() {
 		System.out.println(this.text);
@@ -95,9 +104,19 @@ class MCSAQuestion extends MCQuestion{
 		super(text, maxValue);
 	}
 	
+	public MCSAQuestion(Scanner file) {
+		super(file);
+		int numAs = Integer.parseInt(file.nextLine());
+		for(int i = 0; i < numAs; i++) {
+			double val = file.nextDouble();
+			String ans = file.nextLine();
+			answers.add(new MCSAAnswer(ans,val));
+		}
+	}
+	
 	//get a new MCSAAnswer and return it
 	public MCSAAnswer getNewAnswer() {
-		Scanner scan = new Scanner(System.in); //set up scanner to read system.in
+		Scanner scan = ScannerFactory.getKeyboardScanner(); //set up scanner to read system.in
 		System.out.println("Please enter an answer for this Question");
 		String ans = scan.nextLine();
 		System.out.println("Please enter a double for credit if answer is selected");
@@ -170,9 +189,19 @@ class MCMAQuestion extends MCQuestion{
 		studentAnswer = new ArrayList<Answer>();
 	}
 	
+	public MCMAQuestion(Scanner file) {
+		super(file);
+		int numAs = Integer.parseInt(file.nextLine());
+		for(int i = 0; i < numAs; i++) {
+			double val = file.nextDouble();
+			String ans = file.nextLine();
+			answers.add(new MCMAAnswer(ans,val));
+		}
+	}
+	
 	//get a new MCSAAnswer and return it
 	public MCMAAnswer getNewAnswer() {
-		Scanner scan = new Scanner(System.in); //set up scanner to read system.in
+		Scanner scan = ScannerFactory.getKeyboardScanner(); //set up scanner to read system.in
 		System.out.println("Please enter an answer for this Question");
 		String ans = scan.nextLine();
 		System.out.println("Please enter a double for credit if answer is selected");
@@ -205,7 +234,7 @@ class MCMAQuestion extends MCQuestion{
 			}
 			this.studentAnswer.clear(); //empty the array 
 		}
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = ScannerFactory.getKeyboardScanner();
 		String line = scan.nextLine().trim().toLowerCase();
 		line = line.replaceAll("\\s+","");
 		for(int i = 0; i<line.length(); i++) {
@@ -249,9 +278,14 @@ class SAQuestion extends Question{
 		super(text,mxValue);
 	}
 	
+	public SAQuestion(Scanner file) {
+		super(file);
+		this.rightAnswer = new SAAnswer(file.nextLine());
+	}
+	
 	//method to create an answer for this question
 	public SAAnswer getNewAnswer() {
-		Scanner scan = new Scanner(System.in); //set up scanner to read system.in
+		Scanner scan = ScannerFactory.getKeyboardScanner(); //set up scanner to read system.in
 		System.out.println("Please enter an answer for this Question");
 		String ans = scan.nextLine();
 		return new SAAnswer(ans);
@@ -264,7 +298,7 @@ class SAQuestion extends Question{
 	
 	//Method to scan in student answer and make it an object
 	public void getAnswerFromStudent() {
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = ScannerFactory.getKeyboardScanner();
 		this.studentAnswer = new SAAnswer(scan.nextLine());
 		this.isAnswered = true;
 	}
@@ -301,6 +335,11 @@ class NumQuestion extends Question{
 		super(text, maxValue);
 	}
 	
+	NumQuestion(Scanner file){
+		super(file);
+		this.rightAnswer = new NumAnswer(Double.parseDouble(file.nextLine()));
+	}
+	
 	//print the question, and answer if answered
 	public void print() {
 		System.out.println(this.text);
@@ -317,7 +356,7 @@ class NumQuestion extends Question{
 	
 	//Scan the students answer
 	public void getAnswerFromStudent() {
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = ScannerFactory.getKeyboardScanner();
 		while(!(scan.hasNextDouble())) { //make sure they input a double
 			scan.nextLine();
 		}
@@ -333,7 +372,7 @@ class NumQuestion extends Question{
 	
 	//Method that will return a NumAnswer for the question
 	public NumAnswer getNewAnswer() {
-		Scanner scan = new Scanner(System.in);
+		Scanner scan = ScannerFactory.getKeyboardScanner();
 		System.out.println("Enter an answer for this question");
 		while(!(scan.hasNextDouble())) {
 			scan.nextLine();
