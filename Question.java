@@ -47,12 +47,29 @@ public abstract class Question{
 	
 	abstract void save(PrintWriter file);
 	
+	public void setAnswered(boolean t) {
+		this.isAnswered = t;
+	}
+	
 	public void saveStudentAnswers(PrintWriter file) {
 		if(this.isAnswered == false) return;
 		if(this.studentAnswer instanceof MCSAAnswer) {
 			file.println("MCSAAnswer");
 		}
 		this.studentAnswer.save(file);
+		file.println();
+	}
+	
+	public void restoreStudentAnswers(Scanner file) {
+		if(this instanceof SAQuestion) {
+			this.studentAnswer = new SAAnswer(file.nextLine());
+		}
+		else if(this instanceof MCQuestion) {
+			this.studentAnswer = new MCSAAnswer(file.nextLine(), 0.0);
+		}
+		else if(this instanceof NumQuestion) {
+			this.studentAnswer = new NumAnswer(Double.parseDouble(file.nextLine()));
+		}
 	}
 }
 
@@ -97,7 +114,7 @@ abstract class MCQuestion extends Question{
 	public double getValue(MCAnswer studAns) {
 		double credit = 0;
 		for(int i = 0; i < this.answers.size(); i++) {
-			credit += answers.get(i).getCredit(studAns);
+			credit += studAns.getCredit(this.answers.get(i));
 		}
 		return this.maxValue * credit;
 	}
@@ -131,7 +148,7 @@ class MCSAQuestion extends MCQuestion{
 		int numAs = Integer.parseInt(file.nextLine());
 		for(int i = 0; i < numAs; i++) {
 			double val = file.nextDouble();
-			String ans = file.nextLine();
+			String ans = file.nextLine().trim();
 			answers.add(new MCSAAnswer(ans,val));
 		}
 	}
@@ -201,6 +218,7 @@ class MCSAQuestion extends MCQuestion{
 	public void save(PrintWriter file) {
 		file.println("MCSAQuestion");
 		super.save(file);
+		file.println();
 	}
 }
 
@@ -218,11 +236,12 @@ class MCMAQuestion extends MCQuestion{
 	
 	public MCMAQuestion(Scanner file) {
 		super(file);
+		this.studentAnswer = new ArrayList<Answer>();
 		this.baseCredit = Double.parseDouble(file.nextLine());
 		int numAs = Integer.parseInt(file.nextLine());
 		for(int i = 0; i < numAs; i++) {
 			double val = file.nextDouble();
-			String ans = file.nextLine();
+			String ans = file.nextLine().trim();
 			answers.add(new MCMAAnswer(ans,val));
 		}
 	}
@@ -316,6 +335,14 @@ class MCMAQuestion extends MCQuestion{
 		file.println(length);
 		for(int i = 0; i < length; i++) {
 			this.studentAnswer.get(i).save(file);
+		}
+		file.println();
+	}
+	
+	public void restoreStudentAnswers(Scanner file) {
+		int numAnswers = Integer.parseInt(file.nextLine());
+		for(int i = 0; i < numAnswers; i++) {
+			this.studentAnswer.add(new MCMAAnswer(file.nextLine(), 0));
 		}
 	}
 }
@@ -422,7 +449,7 @@ class NumQuestion extends Question{
 			scan.nextLine();
 		}
 		this.isAnswered = true;
-		this.studentAnswer = new NumAnswer(scan.nextDouble());
+		this.studentAnswer = new NumAnswer(Double.parseDouble(scan.nextLine()));
 	}
 	
 	//get the score for the answer

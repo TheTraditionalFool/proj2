@@ -76,7 +76,7 @@ abstract class MCAnswer extends Answer {
 		if(rightAnswer instanceof MCAnswer) {
 			MCAnswer tmp = (MCAnswer) rightAnswer;
 			if(this.ans.equals(tmp.ans)) {
-				return this.creditIfSelected;
+				return tmp.creditIfSelected;
 			}
 			else return 0.0;
 		}
@@ -84,8 +84,7 @@ abstract class MCAnswer extends Answer {
 	}
 	
 	public void save(PrintWriter file) {
-		file.println(this.ans);
-		file.println();
+		file.println(this.ans.trim());
 	}
 	
 	public String getString() {
@@ -169,7 +168,6 @@ class SAAnswer extends Answer{
 	public void save(PrintWriter file) {
 		file.println("SAAnswer");
 		file.println(this.ans);
-		file.println();
 	}
 	
 	public String getString() {
@@ -228,9 +226,8 @@ class NumAnswer extends Answer{
 	}
 	
 	public void save(PrintWriter file) {
-		file.println("NumQuestion");
+		file.println("NumAnswer");
 		file.println(this.ans);
-		file.println();
 	}
 	
 	public double getString() {

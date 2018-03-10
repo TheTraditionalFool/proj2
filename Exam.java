@@ -148,7 +148,7 @@ public class Exam {
 			}
 			else if(input.equals("exit")) { //check if the user is done
 				System.out.println("\n\n\n");
-				System.out.println("**************DONE SCORING**************\n\n");
+				System.out.println("**************DONE**************\n\n");
 				break; //break out of loop
 			}
 			else if(input.equals("1")) {
@@ -167,6 +167,60 @@ public class Exam {
 		file.println(this.text + "\n");
 		for(int i = 0; i < this.questions.size(); i++) {
 			this.questions.get(i).save(file);
+		}
+	}
+	
+	public void saveStudentAnswers(PrintWriter file) {
+		for(int i = 0; i < this.questions.size(); i++) {
+			this.questions.get(i).saveStudentAnswers(file);
+		}
+	}
+	
+	public void restoreStudentAnswers(Scanner file) {
+		int i = 0;
+		int length = this.questions.size();
+		while(file.hasNext()) {
+			String aType = file.nextLine();
+			if(aType.equals("SAAnswer")) {
+				if(this.questions.get(i) instanceof SAQuestion) {
+					this.questions.get(i).restoreStudentAnswers(file);
+					this.questions.get(i).setAnswered(true);
+				}
+				i++;
+				if(i >= length) {
+					return;
+				}
+			}
+			else if(aType.equals("MCSAAnswer")) {
+				if(this.questions.get(i) instanceof MCSAQuestion) {
+					this.questions.get(i).restoreStudentAnswers(file);
+					this.questions.get(i).setAnswered(true);
+				}
+				i++;
+				if(i >= length) {
+					return;
+				}
+			}
+			else if(aType.equals("MCMAAnswer")) {
+				if(this.questions.get(i) instanceof MCMAQuestion) {
+					this.questions.get(i).restoreStudentAnswers(file);
+					this.questions.get(i).setAnswered(true);
+				}
+				i++;
+				if(i >= length) {
+					return;
+				}
+			}
+			else if(aType.equals("NumAnswer")) {
+				if(this.questions.get(i) instanceof NumQuestion) {
+					this.questions.get(i).restoreStudentAnswers(file);
+					this.questions.get(i).setAnswered(true);
+				}
+				i++;
+				if(i >= length) {
+					return;
+				}
+			}
 		}
 	}
 }
